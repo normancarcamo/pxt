@@ -20,7 +20,7 @@ Backend application codebase using the following stack:
 
 ## Try it:
 ```bash
-git clone normancarcamo/pxt.git
+git clone https://github.com/normancarcamo/pxt.git
 
 cd pxt
 
