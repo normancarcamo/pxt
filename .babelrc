@@ -1,0 +1,40 @@
+{
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-typescript"
+  ],
+  "plugins": [
+    ["module-resolver", {
+      "cwd": "babelrc",
+      "extensions": [ ".js", ".ts", ".jsx", ".tsx", ".json", ".es", ".es6", ".mjs" ],
+      "stripExtensions": [".js", ".jsx", ".es", ".es6", ".mjs"],
+      "root": [
+        "./",
+        "./logs",
+        "./dist",
+        "./docs",
+        "./src",
+        "./test"
+      ]
+    }],
+    ["@babel/plugin-transform-runtime", {
+      "regenerator": true
+    }]
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        ["inline-dotenv", {
+          "path": ".env.dev"
+        }]
+      ]
+    },
+    "test": {
+      "plugins": [
+        ["inline-dotenv", {
+          "path": ".env.test"
+        }]
+      ]
+    }
+  }
+}

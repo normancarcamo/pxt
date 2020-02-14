@@ -1,0 +1,82 @@
+{
+  "name": "pxt",
+  "version": "1.0.0",
+  "description": "pxt",
+  "homepage": "https://github.com/normancarcamo/pxt",
+  "keywords": [
+    "pxt"
+  ],
+  "bugs": {
+    "url": "https://github.com/normancarcamo/pxt/issues"
+  },
+  "maintainers": [
+    "Norman Carcamo <normancarcamo@gmail.com> (normancarcamo.com)"
+  ],
+  "author": {
+    "name": "Norman Carcamo",
+    "email": "normancarcamo@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/normancarcamo/pxt.git"
+  },
+  "contributors": [
+    {
+      "name": "Norman Carcamo",
+      "email": "normancarcamo@gmail.com"
+    }
+  ],
+  "license": "SEE LICENSE IN LICENSE FILE",
+  "main": "dist/index.js",
+  "_moduleAliases": {
+    "src": "src",
+    "test": "test"
+  },
+  "scripts": {
+    "remove": "rm -rf dist docs/test logs node_modules package-lock.json",
+    "create": "mkdir -p dist docs docs/test docs/diagrams test test/config logs logs/all logs/err logs/out",
+    "build": "babel src --out-dir dist -D --extensions '.js,.jsx,.ts,.tsx'",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts",
+    "test": "env $(cat .env.test | xargs) jest --config jest.config.js --detectOpenHandles"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-typescript": "^7.8.3",
+    "@babel/runtime": "^7.8.4",
+    "@types/express": "^4.17.2",
+    "@types/express-fileupload": "^1.1.1",
+    "@types/jest": "^25.1.1",
+    "@types/node": "^13.5.2",
+    "@types/uuid": "^3.4.7",
+    "babel-plugin-inline-dotenv": "^1.5.0",
+    "babel-plugin-module-resolver": "^4.0.0",
+    "dotenv": "^8.2.0",
+    "module-alias": "^2.2.2",
+    "nodemon": "^2.0.2",
+    "ts-jest": "^25.2.0",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "@ncardez/is": "^1.0.4",
+    "@types/sqlite3": "^3.1.6",
+    "body-parser": "^1.19.0",
+    "csv": "^5.3.1",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6",
+    "jest": "^25.1.0",
+    "jest-chain": "^1.1.5",
+    "jest-cucumber": "^2.0.11",
+    "jest-extended": "^0.11.5",
+    "jest-html-reporter": "^2.8.0",
+    "jsdoc": "^3.6.3",
+    "pino": "^5.16.0",
+    "pino-http": "^4.3.0",
+    "pino-pretty": "^3.5.0",
+    "sqlite3": "^4.1.1"
+  }
+}

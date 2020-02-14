@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "allowJs": true,
+    "outDir": "./dist",
+    "rootDirs": [ "./src", "./test" ],
+    "noEmit": true,
+    "strict": true,
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"],
+      "test/*": ["test/*"]
+    },
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "./src/**/*",
+    "./test/**/*",
+    "./global.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "logs",
+    "docs",
+    "dist"
+  ]
+}
