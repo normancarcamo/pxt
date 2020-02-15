@@ -8,3 +8,8 @@ yarn-error.log*
 dist
 logs
 .vscode
+
+# ignore all files under "files" directory except autofit.csv & automundo.csv file due they are used for testing purposes.
+files/*
+!files/autofit.csv
+!files/automundo.csv
