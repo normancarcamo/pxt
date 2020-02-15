@@ -1,6 +1,6 @@
 **Version 1.0.0**
 
-# PXT
+# PXT - Autofit
 
 A product that receives potentially large files in CSV format, process them and
 import their data into sqlite as database. However, providers do not all use 
@@ -31,7 +31,7 @@ npm run dev
 
 ## upload files:
 
-TERMINAL FILE UPLOAD EXAMPLES:
+## UPLOAD FILES FROM TERMINAL:
 
 ### dataset: autofit.csv
 
@@ -53,13 +53,13 @@ To test you can use "curl" tool:
 
 ```bash
 curl \
---form "dataset=@./datasets/autofit.csv" \
+--form "dataset=@./files/autofit.csv" \
 --form "config=%7B%22provider%22:%22autofit%22,%22columns%22:%5B%22uuid%22,%22vin%22,%22make%22,%22model%22,%22mileage%22,%22year%22,%22price%22,%22zipCode%22,%22createdAt%22,%22updatedAt%22%5D%7D" \
 -w "\n" \
-http://localhost:3000/upload
+http://localhost:3000/v1/upload
 ```
 
-### automundo
+### dataset: automundo.csv
 
 ```js
 // Example of configuration layout:
@@ -80,23 +80,23 @@ To test, you can use "curl" tool:
 
 ```bash
 curl \
---form "dataset=@./datasets/automundo.csv" \
+--form "dataset=@./files/automundo.csv" \
 --form "config=%7B%22provider%22:%22automundo%22,%22columns%22:%5B%22uuid%22,%22vin%22,%22make%22,%22model%22,%22year%22%5D%7D" \
 -w "\n" \
-http://localhost:3000/upload
+http://localhost:3000/v1/upload
 ```
 
 -------------------------------------------------------------------
 
 ## Retrieve data:
 
-The app currently have 5 endpoints backed by: localhost:3000
+The app currently have 5 endpoints backed by: localhost:3000/v1
 
-- /upload -> process the csv file
-- /providers -> Retrieve all the providers
-- /providers/:provider -> Retrieve a provider
-- /products -> Retrieve all the products
-- /products/:product -> Retrieve a product
+- /v1/upload -> process the csv file
+- /v1/providers -> Retrieve all the providers
+- /v1/providers/:provider -> Retrieve a provider
+- /v1/products -> Retrieve all the products
+- /v1/products/:product -> Retrieve a product
 
 ## Pending - TODO:
 
@@ -113,7 +113,7 @@ The app currently have 5 endpoints backed by: localhost:3000
 
 ## NPM Scripts:
 - npm run remove -> remove docs/test logs node_modules package-lock.json
-- npm run create -> create dist docs docs/test docs/diagrams test test/config logs logs/all logs/err logs/out
+- npm run create -> create dist docs docs/test docs/diagrams logs logs/all logs/err logs/out
 - npm install    -> Install npm modules on package.json
 - npm run build  -> For production usage
 - npm run start  -> For production usage
