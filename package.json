@@ -34,7 +34,7 @@
   },
   "scripts": {
     "remove": "rm -rf dist docs/test logs node_modules package-lock.json",
-    "create": "mkdir -p dist docs docs/test docs/diagrams test test/config logs logs/all logs/err logs/out",
+    "create": "mkdir -p dist docs docs/test docs/diagrams logs logs/all logs/err logs/out",
     "build": "babel src --out-dir dist -D --extensions '.js,.jsx,.ts,.tsx'",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
@@ -62,7 +62,7 @@
     "typescript": "^3.7.5"
   },
   "dependencies": {
-    "@ncardez/is": "^1.0.4",
+    "@ncardez/is": "^1.0.5",
     "@types/sqlite3": "^3.1.6",
     "body-parser": "^1.19.0",
     "csv": "^5.3.1",

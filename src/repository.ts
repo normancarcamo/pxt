@@ -1,10 +1,9 @@
-import { Connection } from './db';
-import { IConfig } from './types';
+import { IConfig, IDatabase } from './types';
 
 export class Repository {
-  private db: Connection;
+  private db: IDatabase;
 
-  constructor(db: Connection) {
+  constructor(db: IDatabase) {
     this.db = db;
     this.getProviders = this.getProviders.bind(this);
     this.getProvider = this.getProvider.bind(this);

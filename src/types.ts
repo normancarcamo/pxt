@@ -1,25 +1,24 @@
-export interface IHttpErrorOptions {
-  name?          : string;
-  message?       : string;
-  reason?        : string;
-  status?        : number;
-  code?          : number;
-  err?           : Error;
-  source?        : Error;
-  error?         : Error;
-  [key : string] : any;
-}
+import { Request, Response, NextFunction } from 'express';
+import { Service } from './service';
+import { Repository } from './repository';
+import { Database } from './db';
+import { UploadedFile } from 'express-fileupload';
+import { Util } from './utils';
 
-export interface ISqlQueryOptions {
-  columns : string;
-  limit   : string;
-  offset  : string;
-  orderBy : string;
-  sortBy  : string;
-  like    : string;
-}
+export interface IService extends Service {}
 
-export interface IConfig {
-  columns  : string[];
-  provider : string;
-}
+export interface IRepository extends Repository {}
+
+export interface IRequest extends Request {}
+
+export interface IResponse extends Response {}
+
+export interface INext extends NextFunction {}
+
+export interface IUploadedFile extends UploadedFile {}
+
+export interface IDatabase extends Database {}
+
+export interface IUtil extends Util {}
+
+export interface IConfig { columns  : string[]; provider : string; }

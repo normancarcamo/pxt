@@ -1,7 +1,7 @@
 import sqlite from 'sqlite3';
 import is from '@ncardez/is';
 
-export class Connection {
+export class Database {
   conn: sqlite.Database;
 
   constructor() {

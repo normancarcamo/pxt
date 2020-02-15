@@ -1,6 +1,17 @@
-import express from 'express';
 import { notAllowed } from './middlewares';
-import * as controller from './controller';
+import { Database } from './db';
+import { Repository } from './repository';
+import { Service } from './service';
+import { Controller } from './controller';
+import { Util } from './utils';
+import express from 'express';
+
+const controller = new Controller(
+  new Service(
+    new Repository(new Database()), 
+    new Util()
+  )
+);
 
 const router = express.Router();
 

@@ -16,7 +16,7 @@ const config = {
   "moduleFileExtensions": [ "ts", "tsx", "js", "jsx", "json", "node" ],
   "watchPathIgnorePatterns": ["node_modules"],
   "testMatch": [
-    "<rootDir>/test/src/**/(*-|*.)(steps|spec|test).(js|jsx|ts|tsx)?(x)"
+    "<rootDir>/test/**/(*-|*.)(steps|spec|test).(js|jsx|ts|tsx)?(x)"
   ],
   "modulePaths": [
     "<rootDir>",
@@ -26,7 +26,7 @@ const config = {
   "reporters": [
     "default",
     ["./node_modules/jest-html-reporter", {
-      "pageTitle": "WorkFlyt",
+      "pageTitle": "Autofit",
       "outputPath": "docs/test/report/index.html",
       "includeFailureMsg": true,
       "sort": "titleAsc",

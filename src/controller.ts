@@ -1,46 +1,49 @@
-import { Request, Response, NextFunction } from 'express';
-import { Repository } from './repository';
-import { Service } from './service';
-import { Connection } from './db';
+import { IRequest, IResponse, INext, IService } from './types';
 
-const service = new Service(new Repository(new Connection()));
+export class Controller {
+  private service: IService;
 
-export const processFile = [
-  function handler(req: Request, res: Response, next: NextFunction) {
-    service.processFile(req.files, req.body)
-      .then(() => res.sendStatus(200))
-      .catch(next);
+  constructor(service: IService) {
+    this.service = service;
   }
-];
 
-export const getProviders = [
-  function handler(req: Request, res: Response, next: NextFunction) {
-    service.getProviders(req.query)
-      .then((result) => res.json(result))
-      .catch(next);
-  }
-];
-
-export const getProvider = [
-  function handler(req: Request, res: Response, next: NextFunction) {
-    service.getProvider(req.params.provider, req.query)
-      .then((result) => res.json(result))
-      .catch(next);
-  }
-];
-
-export const getProducts = [
-  function handler(req: Request, res: Response, next: NextFunction) {
-    service.getProducts(req.query)
-      .then((result) => res.json(result))
-      .catch(next);
-  }
-];
-
-export const getProduct = [
-  function handler(req: Request, res: Response, next: NextFunction) {
-    service.getProduct(req.params.product, req.query)
-      .then((result) => res.json(result))
-      .catch(next);
-  }
-];
+  processFile = [
+    (req: IRequest, res: IResponse, next: INext) => {
+      this.service.processFile(req.files, req.body)
+        .then(() => res.sendStatus(200))
+        .catch(next);
+    }
+  ]
+  
+  getProviders = [
+    (req: IRequest, res: IResponse, next: INext) => {
+      this.service.getProviders(req.query)
+        .then((result) => res.json(result))
+        .catch(next);
+    }
+  ]
+  
+  getProvider = [
+    (req: IRequest, res: IResponse, next: INext) => {
+      this.service.getProvider(req.params.provider, req.query)
+        .then((result) => res.json(result))
+        .catch(next);
+    }
+  ]
+  
+  getProducts = [
+    (req: IRequest, res: IResponse, next: INext) => {
+      this.service.getProducts(req.query)
+        .then((result) => res.json(result))
+        .catch(next);
+    }
+  ]
+  
+  getProduct = [
+    (req: IRequest, res: IResponse, next: INext) => {
+      this.service.getProduct(req.params.product, req.query)
+        .then((result) => res.json(result))
+        .catch(next);
+    }
+  ]
+}

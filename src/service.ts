@@ -1,13 +1,12 @@
-import { UploadedFile } from 'express-fileupload';
-import is from '@ncardez/is';
-import * as util from './utils';
-import { Repository } from './repository';
+import { IUploadedFile, IRepository, IUtil } from './types';
 
 export class Service {
-  private repository: Repository;
+  private repository: IRepository;
+  private util: IUtil;
 
-  constructor(repository: Repository) {
+  constructor(repository: IRepository, util: IUtil) {
     this.repository = repository;
+    this.util = util;
     this.processFile = this.processFile.bind(this);
     this.getProviders = this.getProviders.bind(this);
     this.getProvider = this.getProvider.bind(this);
@@ -23,7 +22,7 @@ export class Service {
       throw new Error('No files were uploaded.');
     }
   
-    if (!is.object(files.dataset)) {
+    if (!this.util.is.object(files.dataset)) {
       throw new Error('Invalid dataset.');
     }
   
@@ -33,22 +32,30 @@ export class Service {
       throw new Error('Invalid configuration.');
     }
   
-    if (!is.object(config) || is.empty(config)) {
+    if (!this.util.is.object(config) || this.util.is.empty(config)) {
       throw new Error('Invalid configuration.');
     }
   
-    if (!is.string(config.provider) || is.empty(config.provider)) {
+    if (!this.util.is.string(config.provider) || 
+      this.util.is.empty(config.provider)) {
       throw new Error('Invalid provider.');
     }
   
-    if (!is.array(config.columns) || is.empty(config.columns)) {
+    if (!this.util.is.array(config.columns) || 
+      this.util.is.empty(config.columns)) {
       throw new Error('Invalid columns.');
     }
   
     // 2. PARSE DATA:
-    const dataset = files.dataset as UploadedFile;
-  
-    const data = await util.parseCSV(dataset.data, { columns: config.columns });
+    let data = null;
+    try {
+      data = await this.util.parseCSV(
+        (files.dataset as IUploadedFile).data, 
+        { columns: config.columns }
+      );
+    } catch (err) {
+      throw new Error('Invalid file.');
+    }
   
     // 3. INSERT DATA:
     await this.repository.createProducts(config, data);
