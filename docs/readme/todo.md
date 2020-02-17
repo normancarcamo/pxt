@@ -17,6 +17,7 @@
   const querystring = { like: { name: 'azda', vin: '23234D' } }
 
   ```
+- Add stress testing to know if the program works correctly under the presure of thousands of requests per second in parallel/sequentially.
 - The code and tests can be improved by applying function programming style and concepts of course.
   With that we will avoid the usage us mocks in our tests, also because we will be using Dependency Injection the code can be tested in isolation.
 - TSLint
