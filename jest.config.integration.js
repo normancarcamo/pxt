@@ -25,7 +25,6 @@ module.exports = {
     "default",
     ["./node_modules/jest-html-reporter", {
       pageTitle: "Autofit",
-      outputPath: "docs/test/report/index.html",
       includeFailureMsg: true,
       sort: "titleAsc",
       dateFormat: "dd-mm-yyyy HH:MM:ss",
