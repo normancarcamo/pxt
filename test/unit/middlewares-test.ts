@@ -36,14 +36,18 @@ describe('middleware.ts', () => {
       // Arrange:
       const err = new Error('Boom!');
       const req = {} as any;
-      const res = { json: jest.fn((data: any) => {}) } as any;
+      const res = {
+        json: jest.fn((data: any) => {}),
+        status: (code: number) => res
+      } as any;
       const next = () => {};
+      const expected = { error: 'Boom!', reason: undefined, status: 400 };
       
       // Act:
       error(err, req, res, next);
 
       // Assert:
-      expect(res.json).toBeCalledWith({ error: 'Boom!' });
+      expect(res.json).toBeCalledWith(expected);
     });
   });
 });
