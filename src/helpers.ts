@@ -18,7 +18,7 @@ export function csvParser(csv: (
           }
         });
       } catch (err) {
-        fail(new HttpError(`Could not parse the csv file...`, err));
+        fail(new HttpError(`Could not parse the csv file.`, err));
       }
     });
   }
