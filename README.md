@@ -109,6 +109,11 @@ The app currently have 5 endpoints backed by: localhost:3000/v1
 - Use Prepared Statements instead of concatenated values
 - It would be better to use mongo instead of SQLite due the dynamic schema layout of the columns.
 - Limit/handle large files uploaded
+- Add jsdoc to document the code
+- Use POSTMAN to document the endpoints of the API
+- Achieve more than 80% of the test coverage of integration testing
+- Prepare the diagrams of the app lifecycle
+- Create a simple interface to upload files using drag & drop and and/or a button. (Use react)
 - Queries including "LIKE" clause through the req.query object must accept multiple files (If needed)
   ```js
   // Like only allows one key into an object, for example:
