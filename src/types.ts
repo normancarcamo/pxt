@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { Service } from './service';
 import { Repository } from './repository';
-import { Database } from './db';
 import { UploadedFile } from 'express-fileupload';
 import { HttpError } from './helpers';
 import { Is,  } from '@ncardez/is';
 import { Options } from 'csv-parse';
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IService extends Service {}
 
@@ -19,7 +20,13 @@ export interface INext extends NextFunction {}
 
 export interface IUploadedFile extends UploadedFile {}
 
-export interface IDatabase extends Database {}
+export interface IDatabase {
+  db: MongoMemoryServer;
+  mongoose: typeof mongoose;
+  model: Model<Document, {}>;
+  schema: Schema;
+  [key: string]: any;
+}
 
 export interface IUtil {
   is: Is;
