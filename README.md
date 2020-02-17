@@ -39,23 +39,9 @@ npm run start
 
 ## UPLOAD FILES FROM TERMINAL:
 
-### dataset: autofit.csv
-
-```js
-// Data as configuration layout:
-const data = {
-  provider: 'autofit',
-  columns: [ 'uuid','vin','make','model','mileage','year','price','zipCode','createdAt','updatedAt' ]
-}
-
-// stringify data + encode as URI:
-encodeURI(JSON.stringify(data)) 
-
-// Output:
-%7B%22provider%22:%22AutoFit%22,%22columns%22:%5B%22uuid%22,%22vin%22,%22make%22,%22model%22,%22mileage%22,%22year%22,%22price%22,%22zipCode%22,%22createdAt%22,%22updatedAt%22%5D%7D
-```
-
 To test you can use "curl" tool:
+
+### dataset: autofit.csv
 
 ```bash
 # This dataset includes all the columns suggested in the task:
@@ -65,29 +51,13 @@ To test you can use "curl" tool:
 # columns: uuid,vin,make,model,mileage,year,price,zipCode,createdAt,updatedAt
 curl \
 --form "dataset=@./files/autofit.csv" \
---form "config=%7B%22provider%22:%22autofit%22,%22columns%22:%5B%22uuid%22,%22vin%22,%22make%22,%22model%22,%22mileage%22,%22year%22,%22price%22,%22zipCode%22,%22createdAt%22,%22updatedAt%22%5D%7D" \
+--form "provider=autofit" \
+--form "columns=uuid,vin,make,model,mileage,year,price,zipCode,createdAt,updatedAt" \
 -w "\n" \
 http://localhost:3000/v1/upload
 ```
 
 ### dataset: automundo.csv
-
-```js
-// Example of configuration layout:
-const data = {
-  "provider":"automundo",
-  "columns":["uuid","vin","make","model","year"]
-}
-
-// The configuration needs to be first stringified & encoded as URI to work:
-encodeURI(JSON.stringify(data)) 
-
-// Output:
-// %7B%22provider%22:%22automundo%22,%22columns%22:%5B%22uuid%22,%22vin%22,%22make%22,%22model%22,%22year%22%5D%7D
-
-```
-
-To test, you can use "curl" tool:
 
 ```bash
 # this one is a bit different than the "autofit" dataset, the difference is that this includes less columns:
@@ -98,29 +68,13 @@ To test, you can use "curl" tool:
 
 curl \
 --form "dataset=@./files/automundo.csv" \
---form "config=%7B%22provider%22:%22automundo%22,%22columns%22:%5B%22uuid%22,%22vin%22,%22make%22,%22model%22,%22year%22%5D%7D" \
+--form "provider=automundo" \
+--form "columns=uuid,vin,make,model,year" \
 -w "\n" \
 http://localhost:3000/v1/upload
 ```
 
 ### dataset: autopromo.csv
-
-```js
-// Example of configuration layout:
-const data = {
-  "provider":"autopromo",
-  "columns":["vin","uuid","make","model","year"]
-}
-
-// The configuration needs to be first stringified & encoded as URI to work:
-encodeURI(JSON.stringify(data)) 
-
-// Output:
-// %7B%22provider%22:%22autopromo%22,%22columns%22:%5B%22vin%22,%22uuid%22,%22make%22,%22model%22,%22year%22%5D%7D
-
-```
-
-To test, you can use "curl" tool:
 
 ```bash
 # this one is almost the same as "automundo.csv" dataset, the difference is the order of their columns:
@@ -131,7 +85,8 @@ To test, you can use "curl" tool:
 
 curl \
 --form "dataset=@./files/autopromo.csv" \
---form "config=%7B%22provider%22:%22autopromo%22,%22columns%22:%5B%22uuid%22,%22vin%22,%22make%22,%22model%22,%22year%22%5D%7D" \
+--form "provider=autopromo" \
+--form "columns=vin,uuid,make,model,year" \
 -w "\n" \
 http://localhost:3000/v1/upload
 ```
@@ -160,7 +115,7 @@ The app currently have 5 endpoints backed by: localhost:3000/v1
   // Like only allows one key into an object, for example:
   // like.["vin"] is going to be ignored due to it perform an scan on the first key found.
   // also the reason is because in the WHERE clause currently I am supporting one field.
-  const query = { like: { name: 'azda', vin: '23234D' } }
+  const querystring = { like: { name: 'azda', vin: '23234D' } }
 
   ```
 - It would be better to use mongo instead of SQLite due the dynamic schema layout of the columns.
