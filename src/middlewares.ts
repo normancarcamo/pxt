@@ -9,8 +9,10 @@ export function notAllowed (req: IRequest, res: IResponse, next: INext) {
 }
 
 export function error(err: IHttpError, req: IRequest, res: IResponse, next: INext) {
-  res.status(err.status || 400).json({
+  const status = err.status || 400;
+  res.status(status).json({
     error: err.message,
-    reason: err.reason
+    reason: err.reason,
+    status
   });
 }
