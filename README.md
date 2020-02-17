@@ -18,15 +18,21 @@ Backend application codebase using the following stack:
 - docker
 - SQLite
 
-## Try it:
+## Try it in development env:
 ```bash
 git clone https://github.com/normancarcamo/pxt.git
-
 cd pxt
-
 npm install
-
 npm run dev
+```
+
+## Try it in production env:
+```bash
+git clone https://github.com/normancarcamo/pxt.git
+cd pxt
+npm install
+npm run build
+npm run start
 ```
 
 ## upload files:
@@ -161,17 +167,19 @@ The app currently have 5 endpoints backed by: localhost:3000/v1
 - The code and tests can be improved by applying function programming style and concepts of course.
   With that we will avoid the usage us mocks in our tests, 
 also because we will be using Dependency Injection the code can be tested in isolation.
-- Some times it's not a good idea sending the real error reasons to the clients produced in the backend code, a better solution is the usage of internal codes, for example:
+- Sometimes it's not a good idea sending the real error reasons to the clients produced in the backend code, a better solution is the usage of internal codes, for example:
   ```
   { success: false, error: 'PF01' }
   ```
   Here we can see the error key in the json object sent to the client, the code might only concern to the IT department, PF is just an acronym for "Process File" and "01" is the direct path.
   For example:
   ```js
-  // code of an router handler:
+  // code of a router handler:
   router.post('/api/v1/files', function(req, res, next) {
     if (!req.files) {
       throw new Error('PF01');
+    } else else if (!Array.isArray(req.files)) {
+      throw new Error('PF02');
     } else {
       res.json({ success: true, message: 'ok' });
     }
@@ -182,12 +190,12 @@ also because we will be using Dependency Injection the code can be tested in iso
     res.json({ success: false, message: error.message });
   }
   ```
-  That way we hide sensitive information, for example: in dev env we could send the stack error for obviously reasons, but in production env we would not do it.
-  And as a last point if this is applied, we will have to document each error code sent to the client, that way the frontend code checks for each code documented so that way she/he can know the real reason of the error and present the proper message error.
-  It looks like more job than a simple error message, but for security reason this solution can be considered.
+  By doing that we hide sensitive information, for example: in development environment, we could send the stack error for obviously reasons, but in production environment, we would not do it.
+  And as a last point if this is applied, we will have to document the process, each error code sent to the client, this way, the frontend code checks for each code documented so that way the developers in the frontend code can know the real reason of the error and present the proper message error.
+  It looks like more job than a simple error message, but for security reason this solution can be considered, also, it's subjetive and the solution can be debatable.
 - Run TSLint
 - There are more things to improve, but for now I think it's enough.
-- I will improve this if it's required.
+- I will improve all these suggestion/tips if it's required.
 
 ## NPM Scripts:
 - npm run remove -> remove docs/test logs node_modules package-lock.json
