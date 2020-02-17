@@ -9,10 +9,8 @@ export class Service {
     this.util = util;
   }
 
-  async processFile(files: any, body: any) {
+  async processFile(files: any, config: any) {
     // 1. VALIDATE INPUT:
-    let config : { columns: string[]; provider: string; };
-  
     if (!files || Object.keys(files).length === 0) {
       throw new Error('No files were uploaded.');
     }
@@ -20,14 +18,8 @@ export class Service {
     if (!this.util.is.object(files.dataset)) {
       throw new Error('Invalid dataset.');
     }
-  
-    try {
-      config = JSON.parse(decodeURI(body.config));
-    } catch (err) {
-      throw new Error('Invalid configuration.');
-    }
-  
-    if (!this.util.is.object(config) || this.util.is.empty(config)) {
+   
+    if (this.util.is.empty(config)) {
       throw new Error('Invalid configuration.');
     }
   
@@ -35,9 +27,15 @@ export class Service {
       this.util.is.empty(config.provider)) {
       throw new Error('Invalid provider.');
     }
-  
-    if (!this.util.is.array(config.columns) || 
+
+    if (!this.util.is.string(config.columns) || 
       this.util.is.empty(config.columns)) {
+      throw new Error('Invalid columns.');
+    
+    }
+    config.columns = config.columns.split(',');
+
+    if (this.util.is.empty(config.columns)) {
       throw new Error('Invalid columns.');
     }
   
@@ -49,7 +47,9 @@ export class Service {
     );
   
     // 3. INSERT DATA:
-    return await this.repository.createProducts(config, data);
+    const result = await this.repository.createProducts(config, data);
+    
+    return result;
   }
 
   async getProviders(query: any) {
