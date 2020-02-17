@@ -1,3 +1,5 @@
+import 'jest-extended';
+import 'jest-chain';
 import is from '@ncardez/is';
 
 expect.extend({

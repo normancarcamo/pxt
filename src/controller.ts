@@ -8,42 +8,42 @@ export class Controller {
   }
 
   processFile = [
-    (req: IRequest, res: IResponse, next: INext) => {
-      this.service.processFile(req.files, req.body)
+    async (req: IRequest, res: IResponse, next: INext) => {
+      return this.service.processFile(req.files, req.body)
         .then(() => res.sendStatus(200))
-        .catch(next);
+        .catch(error => next(error));
     }
   ]
   
   getProviders = [
-    (req: IRequest, res: IResponse, next: INext) => {
-      this.service.getProviders(req.query)
-        .then((result) => res.json(result))
-        .catch(next);
+    async (req: IRequest, res: IResponse, next: INext) => {
+      return this.service.getProviders(req.query)
+        .then((result: any) => res.json(result))
+        .catch(error => next(error));
     }
   ]
   
   getProvider = [
-    (req: IRequest, res: IResponse, next: INext) => {
-      this.service.getProvider(req.params.provider, req.query)
-        .then((result) => res.json(result))
-        .catch(next);
+    async (req: IRequest, res: IResponse, next: INext) => {
+      return this.service.getProvider(req.params.provider, req.query)
+        .then((result: any) => res.json(result))
+        .catch(error => next(error));
     }
   ]
   
   getProducts = [
-    (req: IRequest, res: IResponse, next: INext) => {
-      this.service.getProducts(req.query)
-        .then((result) => res.json(result))
-        .catch(next);
+    async (req: IRequest, res: IResponse, next: INext) => {
+      return this.service.getProducts(req.query)
+        .then((result: any) => res.json(result))
+        .catch(error => next(error));
     }
   ]
   
   getProduct = [
-    (req: IRequest, res: IResponse, next: INext) => {
-      this.service.getProduct(req.params.product, req.query)
-        .then((result) => res.json(result))
-        .catch(next);
+    async (req: IRequest, res: IResponse, next: INext) => {
+      return this.service.getProduct(req.params.product, req.query)
+        .then((result: any) => res.json(result))
+        .catch(error => next(error));
     }
   ]
 }

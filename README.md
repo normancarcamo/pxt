@@ -52,6 +52,11 @@ encodeURI(JSON.stringify(data))
 To test you can use "curl" tool:
 
 ```bash
+# This dataset includes all the columns suggested in the task:
+
+# dataset: ./files/autofit.csv
+# provider: autofit
+# columns: uuid,vin,make,model,mileage,year,price,zipCode,createdAt,updatedAt
 curl \
 --form "dataset=@./files/autofit.csv" \
 --form "config=%7B%22provider%22:%22autofit%22,%22columns%22:%5B%22uuid%22,%22vin%22,%22make%22,%22model%22,%22mileage%22,%22year%22,%22price%22,%22zipCode%22,%22createdAt%22,%22updatedAt%22%5D%7D" \
@@ -79,9 +84,48 @@ encodeURI(JSON.stringify(data))
 To test, you can use "curl" tool:
 
 ```bash
+# this one is a bit different than the "autofit" dataset, the difference is that this includes less columns:
+
+# dataset: ./files/automundo.csv
+# provider: automundo
+# columns: uuid,vin,make,model,year
+
 curl \
 --form "dataset=@./files/automundo.csv" \
 --form "config=%7B%22provider%22:%22automundo%22,%22columns%22:%5B%22uuid%22,%22vin%22,%22make%22,%22model%22,%22year%22%5D%7D" \
+-w "\n" \
+http://localhost:3000/v1/upload
+```
+
+### dataset: autopromo.csv
+
+```js
+// Example of configuration layout:
+const data = {
+  "provider":"autopromo",
+  "columns":["vin","uuid","make","model","year"]
+}
+
+// The configuration needs to be first stringified & encoded as URI to work:
+encodeURI(JSON.stringify(data)) 
+
+// Output:
+// %7B%22provider%22:%22autopromo%22,%22columns%22:%5B%22vin%22,%22uuid%22,%22make%22,%22model%22,%22year%22%5D%7D
+
+```
+
+To test, you can use "curl" tool:
+
+```bash
+# this one is almost the same as "automundo.csv" dataset, the difference is the order of their columns:
+
+# dataset: ./files/autopromo.csv
+# provider: autopromo
+# columns: vin,uuid,make,model,year
+
+curl \
+--form "dataset=@./files/autopromo.csv" \
+--form "config=%7B%22provider%22:%22autopromo%22,%22columns%22:%5B%22uuid%22,%22vin%22,%22make%22,%22model%22,%22year%22%5D%7D" \
 -w "\n" \
 http://localhost:3000/v1/upload
 ```
@@ -106,7 +150,41 @@ The app currently have 5 endpoints backed by: localhost:3000/v1
 - Use Prepared Statements instead of concatenated values
 - Limit the size of the file uploaded
 - Queries including "LIKE" clause through the req.query object must accept multiple files (If needed)
+  ```js
+  // Like only allows one key into an object, for example:
+  // like.["vin"] is going to be ignored due to it perform an scan on the first key found.
+  // also the reason is because in the WHERE clause currently I am supporting one field.
+  const query = { like: { name: 'azda', vin: '23234D' } }
+
+  ```
 - It would be better to use mongo instead of SQLite due the dynamic schema layout of the columns.
+- The code and tests can be improved by applying function programming style and concepts of course.
+  With that we will avoid the usage us mocks in our tests, 
+also because we will be using Dependency Injection the code can be tested in isolation.
+- Some times it's not a good idea sending the real error reasons to the clients produced in the backend code, a better solution is the usage of internal codes, for example:
+  ```
+  { success: false, error: 'PF01' }
+  ```
+  Here we can see the error key in the json object sent to the client, the code might only concern to the IT department, PF is just an acronym for "Process File" and "01" is the direct path.
+  For example:
+  ```js
+  // code of an router handler:
+  router.post('/api/v1/files', function(req, res, next) {
+    if (!req.files) {
+      throw new Error('PF01');
+    } else {
+      res.json({ success: true, message: 'ok' });
+    }
+  });
+
+  // error handler centralized for the whole app:
+  function hanler(error, req, res, next) {
+    res.json({ success: false, message: error.message });
+  }
+  ```
+  That way we hide sensitive information, for example: in dev env we could send the stack error for obviously reasons, but in production env we would not do it.
+  And as a last point if this is applied, we will have to document each error code sent to the client, that way the frontend code checks for each code documented so that way she/he can know the real reason of the error and present the proper message error.
+  It looks like more job than a simple error message, but for security reason this solution can be considered.
 - Run TSLint
 - There are more things to improve, but for now I think it's enough.
 - I will improve this if it's required.

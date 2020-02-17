@@ -1,101 +1,148 @@
 import { IConfig, IDatabase } from './types';
+import { HttpError } from './helpers';
 
 export class Repository {
   private db: IDatabase;
 
   constructor(db: IDatabase) {
     this.db = db;
-    this.getProviders = this.getProviders.bind(this);
-    this.getProvider = this.getProvider.bind(this);
-    this.getProviderByName = this.getProviderByName.bind(this);
-    this.createProvider = this.createProvider.bind(this);
-    this.getProducts = this.getProducts.bind(this);
-    this.getProduct = this.getProduct.bind(this);
-    this.getProductColumns = this.getProductColumns.bind(this);
-    this.addProductColumn = this.addProductColumn.bind(this);
-    this.createProducts = this.createProducts.bind(this);
   }
 
   async getProviders(query: any) {
-    const options = this.db.getOptions(query);
-    return this.db.all(`
-      SELECT * 
-      FROM provider 
-      ${options.like ? `WHERE ${options.like}` : ''}
-      ${options.orderBy ? options.orderBy : ''}
-      ${options.sortBy ? options.sortBy : ''}
-      ${options.limit ? options.limit : ''}
-      ${options.offset ? options.offset : ''}
-    `);
+    try {
+      const options = this.db.getOptions(query);
+      const stmt = `
+        SELECT * 
+        FROM provider 
+        ${options.like ? `WHERE ${options.like}` : ''}
+        ${options.orderBy ? options.orderBy : ''}
+        ${options.sort ? options.sort : ''}
+        ${options.limit ? options.limit : ''}
+        ${options.offset ? options.offset : ''}
+      `;
+      const result = await this.db.all(stmt);
+      return result;
+    } catch (err) {
+      throw new HttpError(`Could not get the providers.`, err);
+    }
   }
 
   async getProvider(id: string, query: any) {
-    const options = this.db.getOptions(query);
-    return this.db.get(`
-      SELECT ${options.columns ? options.columns : '*'}
-      FROM provider 
-      WHERE id = '${id}'
-    `);
+    try {
+      const options = this.db.getOptions(query);
+      const stmt = `
+        SELECT ${options.columns ? options.columns : '*'}
+        FROM provider 
+        WHERE id = '${id}'
+      `;
+      const result = await this.db.get(stmt);;
+      return result;
+    } catch (err) {
+      throw new HttpError(`Could not get the provider with id: ${id}.`, err);
+    }
   }
 
   async getProviderByName(name: string) {
-    return await this.db.get(`SELECT * FROM provider WHERE name = '${name}'`);
+    try {
+      const stmt = `SELECT * FROM provider WHERE name = '${name}'`;
+      const result = await this.db.get(stmt);
+      return result;
+    } catch (err) {
+      throw new HttpError(`Could not get the provider with: ${name}.`, err);
+    }
   }
 
   async createProvider(data: any) {
-    const name: string = data.provider;
-    return await this.db.run(`INSERT INTO provider (name) VALUES ('${name}')`);
+    try {
+      const name: string = data.provider;
+      const stmt = `INSERT INTO provider (name) VALUES ('${name}')`;
+      const result = await this.db.run(stmt);;
+      return result;
+    } catch (err) {
+      throw new HttpError(`Could not create the provider.`, err);
+    }
   }
 
   async getProducts(query: any) {
-    const options = this.db.getOptions(query);
-    return this.db.all(`
-      SELECT * 
-      FROM product 
-      ${options.like ? `WHERE ${options.like}` : ''}
-      ${options.orderBy ? options.orderBy : ''}
-      ${options.sortBy ? options.sortBy : ''}
-      ${options.limit ? options.limit : ''}
-      ${options.offset ? options.offset : ''}
-    `);
+    try {
+      const options = this.db.getOptions(query);
+      const stmt = `
+        SELECT * 
+        FROM product 
+        ${options.like ? `WHERE ${options.like}` : ''}
+        ${options.orderBy ? options.orderBy : ''}
+        ${options.sort ? options.sort : ''}
+        ${options.limit ? options.limit : ''}
+        ${options.offset ? options.offset : ''}
+      `;
+      const result = await this.db.all(stmt);;
+      return result;
+    } catch (err) {
+      throw new HttpError(`Could not get the products.`, err);
+    }
   }
 
   async getProduct(id: string, query: any) {
-    const options = this.db.getOptions(query);
-    return this.db.get(`
-      SELECT ${options.columns ? options.columns : '*'}
-      FROM product 
-      WHERE id = '${id}'
-    `);
+    try {
+      const options = this.db.getOptions(query);
+      const stmt = `
+        SELECT ${options.columns ? options.columns : '*'}
+        FROM product 
+        WHERE id = '${id}'
+      `;
+      const result = await this.db.get(stmt);
+      return result;
+    } catch (err) {
+      throw new HttpError(`Could not get the product with id.`, err);
+    }
   }
 
   async getProductColumns() {
-    return await this.db.all(`PRAGMA table_info('product')`);
+    try {
+      const stmt = `PRAGMA table_info('product')`;
+      const result = await this.db.all(stmt);;
+      return result;
+    } catch (err) {
+      throw new HttpError(`Could not get the columns of the product.`, err);
+    }
   }
 
   async addProductColumn(name: string) {
-    return await this.db.run(`ALTER TABLE product ADD COLUMN ${name} TEXT;`);
+    try {
+      const stmt = `ALTER TABLE product ADD COLUMN ${name} TEXT;`;
+      const result = await this.db.run(stmt);
+      return result;
+    } catch (err) {
+      throw new HttpError(`Could not add the column "${name}".`, err);
+    }
   }
 
-  async createProducts(config: IConfig, data: any) {
+  async createProducts(config: IConfig, data: any[]) {
+    if (Object.keys(config).length === 0) {
+      throw new Error('config cannot be empty.');
+    }
+
+    if (data.length === 0) {
+      throw new Error('data cannot be empty.');
+    }
+
     let provider = await this.getProviderByName(config.provider);
-  
+
     if (!provider) {
       await this.createProvider(config);
       provider = await this.getProviderByName(config.provider);
     }
   
-    const info = await this.getProductColumns();
+    const productColumns = await this.getProductColumns();
+
+    const current = (productColumns as any[]).map((column) => column.name);
+
+    const columns = config.columns.filter((c: string) => !current.includes(c));
     
-    const currentColumns = info.map((column) => column.name);
-  
-    const newColumns = config.columns
-      .filter((c) => !currentColumns.includes(c));
-  
-    await Promise.all(newColumns.map(col => this.addProductColumn(col)));
-  
+    await Promise.all(columns.map(col => this.addProductColumn(col)));
+    
     const fields: string = config.columns.toString();
-  
+
     const values: string = data.map((row: any) => {
       const list: string[] = [];
       for (const column of config.columns) {
@@ -103,10 +150,15 @@ export class Repository {
       }
       return `('${provider.id}',${list.toString()})`;
     }).join(',');
-  
-    await this.db.run(`
-      INSERT INTO product (id_provider,${fields}) 
-      VALUES ${values}
-    `);
+
+    try {
+      const stmt = `
+        INSERT INTO product (id_provider,${fields}) 
+        VALUES ${values}`;
+      const result = await this.db.run(stmt);
+      return result;
+    } catch (err) {
+      throw new HttpError(`Could not create the products.`, err);
+    }
   }
 }

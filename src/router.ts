@@ -3,13 +3,16 @@ import { Database } from './db';
 import { Repository } from './repository';
 import { Service } from './service';
 import { Controller } from './controller';
-import { Util } from './utils';
+import { csvParser, HttpError } from './helpers';
 import express from 'express';
+import csv from 'csv-parse';
+import is from '@ncardez/is';
 
+const utils = { csv, is, csvParser, HttpError };
 const controller = new Controller(
   new Service(
     new Repository(new Database()), 
-    new Util()
+    utils
   )
 );
 

@@ -7,11 +7,6 @@ export class Service {
   constructor(repository: IRepository, util: IUtil) {
     this.repository = repository;
     this.util = util;
-    this.processFile = this.processFile.bind(this);
-    this.getProviders = this.getProviders.bind(this);
-    this.getProvider = this.getProvider.bind(this);
-    this.getProducts = this.getProducts.bind(this);
-    this.getProduct = this.getProduct.bind(this);
   }
 
   async processFile(files: any, body: any) {
@@ -47,18 +42,14 @@ export class Service {
     }
   
     // 2. PARSE DATA:
-    let data = null;
-    try {
-      data = await this.util.parseCSV(
-        (files.dataset as IUploadedFile).data, 
-        { columns: config.columns }
-      );
-    } catch (err) {
-      throw new Error('Invalid file.');
-    }
+    const csv = this.util.csvParser(this.util.csv);
+    const data = await csv(
+      (files.dataset as IUploadedFile).data, 
+      { columns: config.columns }
+    );
   
     // 3. INSERT DATA:
-    await this.repository.createProducts(config, data);
+    return await this.repository.createProducts(config, data);
   }
 
   async getProviders(query: any) {

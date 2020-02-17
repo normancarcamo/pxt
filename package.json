@@ -38,7 +38,8 @@
     "build": "babel src --out-dir dist -D --extensions '.js,.jsx,.ts,.tsx'",
     "start": "node dist/index.js",
     "dev": "nodemon src/index.ts",
-    "test": "env $(cat .env.test | xargs) jest --config jest.config.js --detectOpenHandles"
+    "test": "env $(cat .env.test | xargs) jest --config jest.config.js --detectOpenHandles",
+    "test:cov": "npm run test -- --coverage"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",

@@ -34,12 +34,17 @@ const config = {
     }]
   ],
   "coveragePathIgnorePatterns": [
-    "<rootDir>/test"
+    "<rootDir>/test",
+    "<rootDir>/src/index",
+    "<rootDir>/src/app",
+    "<rootDir>/src/router",
   ],
   "collectCoverageFrom": [
-    "<rootDir>/src/**/*.(js|jsx|ts|tsx)"
+    "<rootDir>/src/*.(js|jsx|ts|tsx)"
   ]
 };
+
+console.log('=======>', process.env.MOCK);
 
 if (process.env.MOCK === "true") {
   config.reporters[1][1].outputPath = "docs/test/report/testing-mock.html";
