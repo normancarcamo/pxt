@@ -10,6 +10,8 @@ logs
 .vscode
 docs/test/coverage/*
 docs/test/report/*
+!docs/test/img/*
+!docs/test/readme/*
 
 # ignore all files under "files" directory except autofit.csv & automundo.csv file due they are used for testing purposes.
 files/*
