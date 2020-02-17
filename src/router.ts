@@ -1,5 +1,6 @@
 import { notAllowed } from './middlewares';
-import { Database } from './db';
+import * as db from './db';
+import * as model from './model';
 import { Repository } from './repository';
 import { Service } from './service';
 import { Controller } from './controller';
@@ -11,7 +12,7 @@ import is from '@ncardez/is';
 const utils = { csv, is, csvParser, HttpError };
 const controller = new Controller(
   new Service(
-    new Repository(new Database()), 
+    new Repository({ ...db, ...model }), 
     utils
   )
 );
@@ -28,10 +29,6 @@ router.route('/providers')
 
 router.route('/providers/:provider')
   .get(controller.getProvider)
-  .all(notAllowed);
-
-router.route('/products')
-  .get(controller.getProducts)
   .all(notAllowed);
 
 router.route('/products/:product')
