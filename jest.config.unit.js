@@ -14,7 +14,7 @@ module.exports = {
   moduleFileExtensions: [ "ts", "tsx", "js", "jsx", "json", "node" ],
   watchPathIgnorePatterns: ["node_modules"],
   testMatch: [
-    "<rootDir>/test/**/(*-|*.)(steps|spec|test).(js|jsx|ts|tsx)?(x)"
+    "<rootDir>/test/**/(*-|*.)(spec|test).(js|jsx|ts|tsx)?(x)"
   ],
   modulePaths: [
     "<rootDir>",
