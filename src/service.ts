@@ -53,11 +53,7 @@ export class Service {
   }
   
   async getProvider(id: string, query: any) {
-    return await this.repository.getProvider(id, query);
-  }
-  
-  async getProducts(query: any) {
-    return await this.repository.getProducts(query);
+    return await this.repository.getProviderById(id, query);
   }
   
   async getProduct(id: string, query: any) {
