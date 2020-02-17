@@ -34,10 +34,6 @@ export class Service {
     
     }
     config.columns = config.columns.split(',');
-
-    if (this.util.is.empty(config.columns)) {
-      throw new Error('Invalid columns.');
-    }
   
     // 2. PARSE DATA:
     const csv = this.util.csvParser(this.util.csv);
@@ -48,7 +44,7 @@ export class Service {
   
     // 3. INSERT DATA:
     const result = await this.repository.createProducts(config, data);
-    
+
     return result;
   }
 
