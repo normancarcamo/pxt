@@ -12,7 +12,7 @@ columns we do not wish to capture.
 
 Build an API with a single endpoint that accepts a file upload in the CSV format and the provider
 name that sent the file, looks up a configuration defining the column layout and parses the CSV
-into either a file or - as a stretch goal - into an in-memory database (see links).
+into either a file or - as a stretch goal - into an in-memory database.
 
 
 - [Stack](#stack)
@@ -33,7 +33,6 @@ Backend application codebase using the following stack:
 - Nodemon
 - Babel 7
 - Express.js
-- docker
 - SQLite
 - jest (babel-jest, ts-jest, jest-extended, jest-chain, jest-cucumber)
 - Unit testing, Integration testing + Cucumber & Gherkin syntax.
