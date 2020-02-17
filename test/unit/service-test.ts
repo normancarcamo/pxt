@@ -45,45 +45,17 @@ describe('service.ts', () => {
         .catch((err: Error) => expect(err.message)
         .toEqual('Invalid dataset.'));
     });
-    it('should throw error when body.config is invalid', () => {
+    it('should throw error when body.provider is invalid', () => {
       // Arrange:
       const service = new Service(repository as any, utils as any);
       const useCases = [
         {
           files: { dataset: {} },
-          body: { config: '######' } // random string
+          body: { provider: [] }
         },
         {
           files: { dataset: {} },
-          body: { config: '%7B%7D' } // {}
-        },
-        {
-          files: { dataset: {} },
-          body: { config: '%5B%5D' } // []
-        },
-      ];
-
-      // Act:
-      for (const { files, body } of useCases) {
-        const result = service.processFile(files, body);
-        
-        // Assert:
-        result
-          .catch((err: Error) => expect(err.message)
-          .toEqual('Invalid configuration.'));
-      }
-    });
-    it('should throw error when body.config.provider is invalid', () => {
-      // Arrange:
-      const service = new Service(repository as any, utils as any);
-      const useCases = [
-        {
-          files: { dataset: {} },
-          body: { config: '%7B%22provider%22:%5B%5D%7D' }
-        },
-        {
-          files: { dataset: {} },
-          body: { config: '%7B%22provider%22:%22%22%7D' }
+          body: { provider: {} }
         },
       ];
 
@@ -97,20 +69,22 @@ describe('service.ts', () => {
           .toEqual('Invalid provider.'));
       }
     });
-    it('should throw error when body.config.columns is invalid', () => {
+    it('should throw error when body.columns is invalid', () => {
       // Arrange:
       const service = new Service(repository as any, utils as any);
       const useCases = [
         {
           files: { dataset: {} },
           body: {
-            config: '%7B%22provider%22:%22autofit%22,%22columns%22:%7B%7D%7D'
+            provider: 'autofit',
+            columns: {}
           }
         },
         {
           files: { dataset: {} },
           body: {
-            config: '%7B%22provider%22:%22autofit%22,%22columns%22:%5B%5D%7D'
+            provider: 'autofit',
+            columns: {}
           }
         },
       ];
@@ -125,29 +99,51 @@ describe('service.ts', () => {
           .toEqual('Invalid columns.'));
       }
     });
-    it('should throw error when body.config.columns is invalid', () => {
+    it('should throw error when body.columns is invalid', () => {
       // Arrange:
       const service = new Service(repository as any, utils as any);
       const files = { dataset: {} };
-      const body = { config: '%7B%22provider%22:%22autofit%22,%22columns%22:%5B%22vin%22,%22make%22%5D%7D' };
+      const body = {
+        provider: 'autofit',
+        columns: ['vin','make']
+      };
       // Act:
       const result = service.processFile(files, body);
 
       // Assert:
       result
         .catch((err: Error) => expect(err.message)
-        .toEqual('Invalid file.'));
+        .toEqual('Invalid columns.'));
+    });
+    it('should throw error when body is empty', async () => {
+      // Arrange:
+      const service = new Service(repository as any, utils as any);
+      const files = { dataset: { data: [{ mk: 'Toyota', md: 'Camry' }] } };
+      const body = {};
+
+      // Act:
+      const result = service.processFile(files, body);
+
+      // Assert:
+      return result.catch((err: any) => {
+        expect(err.message).toEqual('Invalid configuration.');
+      });
     });
     it('should throw error when the csv file could not be parsed', () => {
       // Arrange:
       const expected = new Error('Boom!');
-      jest.spyOn(repository, 'createProducts').mockRejectedValue(expected);
+      jest.spyOn(repository, 'createProducts').mockImplementation(async () => {
+        throw expected;
+      });
       utils.csv = (files: any, options: any, callback: any): void => {
         callback(expected, null);
       };
       const service = new Service(repository as any, utils as any);
       const files = { dataset: { data: [{ mk: 'Toyota', md: 'Camry' }] } };
-      const body = { config: '%7B%22provider%22:%22autofit%22,%22columns%22:%5B%22vin%22,%22make%22%5D%7D' };
+      const body = {
+        provider: 'autofit',
+        columns: 'vin,make'
+      };
 
       // Act:
       const result = service.processFile(files, body);
@@ -164,7 +160,10 @@ describe('service.ts', () => {
       };
       const service = new Service(repository as any, utils as any);
       const files = { dataset: { data: [{ mk: 'Toyota', md: 'Camry' }] } };
-      const body = { config: '%7B%22provider%22:%22autofit%22,%22columns%22:%5B%22vin%22,%22make%22%5D%7D' };
+      const body = {
+        provider: 'autofit',
+        columns: 'vin,make'
+      };
 
       // Act:
       const result = await service.processFile(files, body);
