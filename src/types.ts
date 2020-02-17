@@ -42,3 +42,5 @@ export interface IHttpErrorOptions {
   error?   : Error;
   [key : string] : any;
 }
+
+export interface IHttpError extends HttpError {}
