@@ -2,8 +2,8 @@ module.exports = {
   preset: "ts-jest",
   rootDir: ".",
   bail: true,
-  verbose: false,
-  collectCoverage: false,
+  verbose: true,
+  collectCoverage: true,
   expand: true,
   testURL: "http://localhost:3001/",
   coverageDirectory: "docs/test/coverage",
@@ -32,11 +32,7 @@ module.exports = {
     }]
   ],
   coveragePathIgnorePatterns: [
-    "<rootDir>/test",
-    "<rootDir>/src/index",
-    "<rootDir>/src/app",
-    "<rootDir>/src/router",
-    "<rootDir>/src/controller",
+    "<rootDir>/src/index"
   ],
   collectCoverageFrom: [
     "<rootDir>/src/*.(js|jsx|ts|tsx)"
