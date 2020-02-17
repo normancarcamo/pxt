@@ -6,10 +6,11 @@
 
 ## npm:
 
-  ### production
   - ``npm run remove``                     - remove docs/test logs node_modules package-lock.json
   - ``npm run create``                     - create dist docs docs/test docs/diagrams logs logs/all logs/err logs/out
-  - ``npm install``                        - Install npm modules on package.json
+  - ``npm install``
+  
+  ### production
   - ``npm run build``
   - ``npm run start``
 
