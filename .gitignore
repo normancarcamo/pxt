@@ -16,3 +16,4 @@ files/*
 !files/autofit.csv
 !files/automundo.csv
 !files/autopromo.csv
+!files/autos.csv
