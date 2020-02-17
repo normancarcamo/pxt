@@ -8,7 +8,6 @@ export class Controller {
     this.processFile = this.processFile.bind(this);
     this.getProviders = this.getProviders.bind(this);
     this.getProvider = this.getProvider.bind(this);
-    this.getProduct = this.getProduct.bind(this);
   }
 
   async processFile(req: IRequest, res: IResponse, next: INext) {
@@ -25,12 +24,6 @@ export class Controller {
   
   async getProvider(req: IRequest, res: IResponse, next: INext) {
     return this.service.getProvider(req.params.provider, req.query)
-      .then((result: any) => res.json(result))
-      .catch(error => next(error));
-  }
-  
-  async getProduct(req: IRequest, res: IResponse, next: INext) {
-    return this.service.getProduct(req.params.product, req.query)
       .then((result: any) => res.json(result))
       .catch(error => next(error));
   }
