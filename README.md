@@ -105,11 +105,10 @@ The app currently have 5 endpoints backed by: localhost:3000/v1
 
 ## Pending - TODO:
 
-- Testing using ATTD (Cucumber + Gherkin). :( I couldn't add them on time
-- Add datalizer to use schemas.
 - Use a framework for SQL due to this project uses SQLite
 - Use Prepared Statements instead of concatenated values
-- Limit the size of the file uploaded
+- It would be better to use mongo instead of SQLite due the dynamic schema layout of the columns.
+- Limit/handle large files uploaded
 - Queries including "LIKE" clause through the req.query object must accept multiple files (If needed)
   ```js
   // Like only allows one key into an object, for example:
@@ -118,39 +117,9 @@ The app currently have 5 endpoints backed by: localhost:3000/v1
   const querystring = { like: { name: 'azda', vin: '23234D' } }
 
   ```
-- It would be better to use mongo instead of SQLite due the dynamic schema layout of the columns.
 - The code and tests can be improved by applying function programming style and concepts of course.
-  With that we will avoid the usage us mocks in our tests, 
-also because we will be using Dependency Injection the code can be tested in isolation.
-- Sometimes it's not a good idea sending the real error reasons to the clients produced in the backend code, a better solution is the usage of internal codes, for example:
-  ```
-  { success: false, error: 'PF01' }
-  ```
-  Here we can see the error key in the json object sent to the client, the code might only concern to the IT department, PF is just an acronym for "Process File" and "01" is the direct path.
-  For example:
-  ```js
-  // code of a router handler:
-  router.post('/api/v1/files', function(req, res, next) {
-    if (!req.files) {
-      throw new Error('PF01');
-    } else else if (!Array.isArray(req.files)) {
-      throw new Error('PF02');
-    } else {
-      res.json({ success: true, message: 'ok' });
-    }
-  });
-
-  // error handler centralized for the whole app:
-  function hanler(error, req, res, next) {
-    res.json({ success: false, message: error.message });
-  }
-  ```
-  By doing that we hide sensitive information, for example: in development environment, we could send the stack error for obviously reasons, but in production environment, we would not do it.
-  And as a last point if this is applied, we will have to document the process, each error code sent to the client, this way, the frontend code checks for each code documented so that way the developers in the frontend code can know the real reason of the error and present the proper message error.
-  It looks like more job than a simple error message, but for security reason this solution can be considered, also, it's subjetive and the solution can be debatable.
-- Run TSLint
-- There are more things to improve, but for now I think it's enough.
-- I will improve all these suggestion/tips if it's required.
+  With that we will avoid the usage us mocks in our tests, also because we will be using Dependency Injection the code can be tested in isolation.
+- TSLint
 
 ## Testing:
 
