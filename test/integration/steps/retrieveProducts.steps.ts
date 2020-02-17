@@ -1,9 +1,9 @@
 import { defineFeature, loadFeature } from 'jest-cucumber';
 import supertest from 'supertest';
-import app from '../../src/app';
+import app from 'src/app';
 import fs from 'fs';
 
-const retrieveInfo = loadFeature('test/integration/retrieveProducts.feature');
+const retrieveInfo = loadFeature('test/integration/features/retrieveProducts.feature');
 const request = supertest.agent(app);
 const uploadFiles = async () => {
   let autofit: any = fs.readFileSync('files/autofit.csv');

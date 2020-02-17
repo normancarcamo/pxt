@@ -1,31 +1,29 @@
 import { defineFeature, loadFeature } from 'jest-cucumber';
 import supertest from 'supertest';
-import app from '../../src/app';
+import app from 'src/app';
 import fs from 'fs';
 
-const retrieveInfo = loadFeature('test/integration/retrieveProviders.feature');
+const retrieveInfo = loadFeature('test/integration/features/retrieveProviders.feature');
 const request = supertest.agent(app);
 const uploadFiles = async () => {
   let autofit: any = fs.readFileSync('files/autofit.csv');
   let automundo: any = fs.readFileSync('files/automundo.csv');
   let autopromo: any = fs.readFileSync('files/autopromo.csv');
-  await Promise.all([
-    request
-      .post('/v1/upload')
-      .attach('dataset', autofit, 'files/autofit.csv')
-      .field('provider', 'autofit')
-      .field('columns', 'uuid,vin,make,model,mileage,year,price,zipCode,createdAt,updatedAt'),
-    request
-      .post('/v1/upload')
-      .attach('dataset', automundo, 'files/automundo.csv')
-      .field('provider', 'automundo')
-      .field('columns', 'uuid,vin,make,model,year'),
-    request
-      .post('/v1/upload')
-      .attach('dataset', autopromo, 'files/autopromo.csv')
-      .field('provider', 'autopromo')
-      .field('columns', 'vin,uuid,make,model,year')
-  ]);
+  await request
+    .post('/v1/upload')
+    .attach('dataset', autofit, 'files/autofit.csv')
+    .field('provider', 'autofit')
+    .field('columns', 'uuid,vin,make,model,mileage,year,price,zipCode,createdAt,updatedAt'),
+  await request
+    .post('/v1/upload')
+    .attach('dataset', automundo, 'files/automundo.csv')
+    .field('provider', 'automundo')
+    .field('columns', 'uuid,vin,make,model,year'),
+  await request
+    .post('/v1/upload')
+    .attach('dataset', autopromo, 'files/autopromo.csv')
+    .field('provider', 'autopromo')
+    .field('columns', 'vin,uuid,make,model,year')
 }
 
 defineFeature(retrieveInfo, (test) => {

@@ -154,7 +154,7 @@ also because we will be using Dependency Injection the code can be tested in iso
 
 ## Testing:
 
-### Unit testing:
+### Unit testing: 100%
 You can execute the unit testing with the help of the 2 npm script commands:
 
 ```bash
@@ -165,7 +165,7 @@ npm run test:unit:coverage
 `npm run test:unit:coverage` is the same `npm run test:unit` with the --coverage option cli passed.
 For the rest of the options you can check the documentation of jest [docs](https://jestjs.io/docs/en/configuration).
 
-### Integration Or Acceptance testing:
+### Integration testing: %80
 You can execute the unit testing with the help of the 2 npm script commands:
 
 ```bash

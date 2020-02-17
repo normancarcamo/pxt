@@ -3,7 +3,7 @@ import supertest from 'supertest';
 import app from 'src/app';
 import fs from 'fs';
 
-const uploadFileFeature = loadFeature('test/integration/uploadFile.feature');
+const uploadFileFeature = loadFeature('test/integration/features/uploadFile.feature');
 const request = supertest.agent(app);
 
 defineFeature(uploadFileFeature, (test) => {

@@ -7,7 +7,7 @@ export class Controller {
     this.service = service;
     this.processFile = this.processFile.bind(this);
     this.getProviders = this.getProviders.bind(this);
-    this.getProvider = this.getProviders.bind(this);
+    this.getProvider = this.getProvider.bind(this);
     this.getProducts = this.getProducts.bind(this);
     this.getProduct = this.getProduct.bind(this);
   }
