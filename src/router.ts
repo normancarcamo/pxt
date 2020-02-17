@@ -31,8 +31,4 @@ router.route('/providers/:provider')
   .get(controller.getProvider)
   .all(notAllowed);
 
-router.route('/products/:product')
-  .get(controller.getProduct)
-  .all(notAllowed);
-
 export default router;
