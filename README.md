@@ -197,6 +197,30 @@ also because we will be using Dependency Injection the code can be tested in iso
 - There are more things to improve, but for now I think it's enough.
 - I will improve all these suggestion/tips if it's required.
 
+## Testing:
+
+### Unit testing:
+You can execute the unit testing with the help of the 2 npm script commands:
+
+```bash
+npm run test:unit
+npm run test:unit:coverage
+```
+
+`npm run test:unit:coverage` is the same `npm run test:unit` with the --coverage option cli passed.
+For the rest of the options you can check the documentation of jest [docs](https://jestjs.io/docs/en/configuration).
+
+### Integration Or Acceptance testing:
+You can execute the unit testing with the help of the 2 npm script commands:
+
+```bash
+npm run test:integration
+npm run test:integration:coverage
+```
+
+`npm run test:integration:coverage` is the same `npm run test:integration` with the --coverage option cli passed.
+For the rest of the options you can check the documentation of jest [docs](https://jestjs.io/docs/en/configuration).
+
 ## NPM Scripts:
 - npm run remove -> remove docs/test logs node_modules package-lock.json
 - npm run create -> create dist docs docs/test docs/diagrams logs logs/all logs/err logs/out
