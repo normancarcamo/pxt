@@ -1,16 +1,39 @@
 import { Request, Response, NextFunction } from 'express';
-import { Service } from './service';
-import { Repository } from './repository';
-import { UploadedFile } from 'express-fileupload';
 import { HttpError } from './helpers';
-import { Is,  } from '@ncardez/is';
-import { Options } from 'csv-parse';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import { Is } from '@ncardez/is';
+import { Database } from './db';
+import csv from 'csvtojson';
+import { Writable, Readable } from 'stream';
 
-export interface IService extends Service {}
+export interface Service {
+  processFile(req: any, res: any): Promise<{ msg: string } | HttpError>;
+  getProviders(query: any): Promise<any>;
+  getProvider(id: string, query: any): Promise<any>;
+  getCars(query: any): Promise<any>;
+  getCar(id: string, query: any): Promise<any>;
+}
 
-export interface IRepository extends Repository {}
+export interface Repository {
+  createProvider(name: string): Promise<any>;
+  getProviders(query: any): Promise<any>;
+  getProviderById(id: string, query: any): Promise<any>;
+  insertCars(list: any[]): Promise<any>;
+  getCars(query: any): Promise<any>;
+  getCarById(id: string, query: any): Promise<any>;
+}
+
+export interface IProcessFileConfig {
+  provider: string
+  columns: string
+  nullObject?: any
+  delimiter?: any
+  quote?: any
+  trim?: any
+  ignoreEmpty?: any
+  noHeader?: any
+  batchSize?: any
+  contentType?: string
+}
 
 export interface IRequest extends Request {}
 
@@ -18,25 +41,18 @@ export interface IResponse extends Response {}
 
 export interface INext extends NextFunction {}
 
-export interface IUploadedFile extends UploadedFile {}
+export interface IDatabase extends Database {}
 
-export interface IDatabase {
-  db: MongoMemoryServer;
-  mongoose: typeof mongoose;
-  model: Model<Document, {}>;
-  schema: Schema;
-  [key: string]: any;
-}
+export interface IWritable extends Writable {}
+
+export interface IReadable extends Readable {}
 
 export interface IUtil {
   is: Is;
+  csv: typeof csv;
   HttpError: typeof HttpError;
-  csvParser: (csv: any) => (file: any, options: Options) => Promise<any>;
-  csv: any;
-  [key: string]: any;
+  Writable: typeof Writable;
 }
-
-export interface IConfig { columns  : string[]; provider : string; }
 
 export interface IHttpErrorOptions {
   name?    : string;

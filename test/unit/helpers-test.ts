@@ -1,50 +1,6 @@
-import { csvParser, HttpError } from '../../src/helpers';
+import { HttpError } from '../../src/helpers';
 
 describe('helpers.ts', () => {
-  describe('csvParser', () => {
-    it('should resolve when the data has been parsed', async () => {
-      // Arrange:
-      const expected: any = [];
-      const csv = jest.fn((files, options, cb) => cb(null, expected));
-
-      // Act:
-      const fn = csvParser(csv);
-      const result = await fn('', {});
-
-      // Assert:
-      expect(csv).toBeCalledTimes(1);
-      expect(result).toEqual(expected);
-    });
-    it('should reject when the data could not be parsed', () => {
-      // Arrange:
-      const expected = new Error('Boom!');
-      const csv = jest.fn((files, options, cb) => cb(expected, null));
-
-      // Act:
-      const result = csvParser(csv)('', {});
-
-      // Assert:
-      result.catch((error: any) => {
-        expect(error.reason).toEqual(expected.message);
-        expect(csv).toBeCalledTimes(1);
-      });
-    });
-    it('should reject when throw error', () => {
-      // Arrange:
-      const expected = new Error('Boom!');
-      const csv = jest.fn((files, options, cb) => { throw expected; });
-
-      // Act:
-      const result = csvParser(csv)('', {});
-
-      // Assert:
-      result.catch((error: any) => {
-        expect(error.reason).toEqual(expected.message);
-        expect(csv).toBeCalledTimes(1);
-      });
-    });
-  });
-
   describe('HttpError', () => {
     it('should return an instance of HttpError', async () => {
       // Arrange:

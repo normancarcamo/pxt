@@ -36,8 +36,10 @@ module.exports = {
     "<rootDir>/test",
     "<rootDir>/src/index",
     "<rootDir>/src/app",
+    "<rootDir>/src/db",
     "<rootDir>/src/router",
     "<rootDir>/src/controller",
+    "<rootDir>/src/types"
   ],
   collectCoverageFrom: [
     "<rootDir>/src/*.(js|jsx|ts|tsx)"

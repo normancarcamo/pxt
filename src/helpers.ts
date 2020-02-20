@@ -1,28 +1,5 @@
-import { Options } from 'csv-parse';
 import { IHttpErrorOptions } from './types';
 import is from '@ncardez/is';
-
-export function csvParser(csv: (
-  files: any | any[], 
-  options: Options, 
-  callback: (error: Error | null | undefined, data: any) => void
-) => void) {
-  return function (file: any | any[], options: Options) {
-    return new Promise<any>((done, fail) => {
-      try {
-        csv(file, options, (err, data) => {
-          if (err) {
-            fail(new HttpError(`Could not parse the csv file.`, err));
-          } else {
-            done(data);
-          }
-        });
-      } catch (err) {
-        fail(new HttpError(`Could not parse the csv file.`, err));
-      }
-    });
-  }
-}
 
 export class HttpError extends Error {
   name    : string = 'HttpError';
